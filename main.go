@@ -48,6 +48,7 @@ func main() {
 		"search",
 		"searchall",
 		"rpm",
+		"refresh"
 	}
 
 	if *vardec == "list" {
@@ -61,9 +62,22 @@ func main() {
 		cmd := exec.Command("dnf", "list", "--installed")
 		err := cmd.Run()
 		if err != nil {
-			log.Fatal("cmd.Run() failed with %s\n", err)
+			log.Fatal("cmd failed with %s\n", err)
 		}
 		out, err := exec.Command("dnf", "list", "--installed").Output()
+		if err != nil {
+			log.Fatal(err)
+			fmt.Println(out)
+		}
+	}
+
+	if len(*password) > 0 && *command == "refresh" {
+		cmd := exec.Command("dnf", "makecache", "--refresh")
+		err := cmd.Run()
+		if err != nil {
+			log.Fatal("cmd failed with the %s\n", err)
+		}
+		out, err := exec.Command("dnf", "makecache", "--refresh")
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
