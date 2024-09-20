@@ -48,7 +48,7 @@ func main() {
 		"search",
 		"searchall",
 		"rpm",
-		"refresh"
+		"refresh",
 	}
 
 	if *vardec == "list" {
@@ -77,7 +77,7 @@ func main() {
 		if err != nil {
 			log.Fatal("cmd failed with the %s\n", err)
 		}
-		out, err := exec.Command("dnf", "makecache", "--refresh")
+		out := exec.Command("dnf", "makecache", "--refresh")
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
