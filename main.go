@@ -13,290 +13,231 @@ a complete fedora dnf system manager written in Golang
 */
 
 import (
-	"flag"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
+
+	"github.com/spf13/cobra"
 )
 
 func main() {
-	vardec := flag.String("help", "false", "boolean value")
-	password := flag.String("password", "passw", "password for the system")
-	command := flag.String("command", "comm", "command for the system check")
-	pack := flag.String("package", "pkgname", "name for the package")
-	idnumber := flag.String("idnumber", "id", "idnumber for the rollback")
-	rpm := flag.String("rpmpackage", "rpm", "rpm package path")
-
-	flag.Parse()
-
-	commands := []string{
-		"list",
-		"list-recent",
-		"upgrade",
-		"autoremvoe",
-		"dnf-update",
-		"minimal",
-		"pkdupdate",
-		"pkgdowngrade",
-		"clean",
-		"history",
-		"rollback",
-		"info",
-		"install",
-		"reinstall",
-		"remove",
-		"search",
-		"searchall",
-		"rpm",
-		"refresh",
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
+}
 
-	if *vardec == "list" {
-		fmt.Println("The following commands are present in the fedora devops")
-		for i := range commands {
-			fmt.Println(commands[i])
-		}
-	}
+var (
+	list         string
+	listrecent   string
+	upgrade      string
+	autoremove   string
+	dnfupdate    string
+	minimal      string
+	pkgupdate    string
+	pkgdowngrade string
+	clean        string
+	history      string
+	rollback     string
+	info         string
+	install      string
+	reinstall    string
+	removep      string
+	search       string
+	searchall    string
+	rpm          string
+	refresh      string
+	alignment    string
+	rpmpackage   string
+	packageid    string
+)
 
-	if len(*password) > 0 && *command == "list" {
-		cmd := exec.Command("dnf", "list", "--installed")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
+var rootCmd = &cobra.Command{
+	Use:  "options",
+	Long: "This is a fedora devops application that allows you to do all the fedora system devops",
+	Run:  flagsFunc,
+}
+
+func init() {
+	rootCmd.Flags().
+		StringVarP(&list, "listcommand", "l", "list dnf", "list all the repositories")
+	rootCmd.Flags().
+		StringVarP(&listrecent, "listrecent", "q", "list recent dnf", "list all the recent dnf")
+	rootCmd.Flags().
+		StringVarP(&refresh, "refresh", "w", "refresh all the packages", "refreshing packages")
+	rootCmd.Flags().
+		StringVarP(&upgrade, "upgrade", "u", "upgrade dnf", "list all the dnf upgrade")
+	rootCmd.Flags().
+		StringVarP(&autoremove, "autoremove", "e", "remove dnf", "remove all the dnf install")
+	rootCmd.Flags().
+		StringVarP(&dnfupdate, "dnfupdate", "x", "update all dnf", "update all dnf repositories")
+	rootCmd.Flags().
+		StringVarP(&minimal, "minimal", "m", "update all dnf minimal", "update all minimal dnf")
+	rootCmd.Flags().
+		StringVarP(&pkgupdate, "pkgupdate", "p", "update all the packages", "updates all the dnf packages")
+	rootCmd.Flags().
+		StringVarP(&pkgdowngrade, "pkgdowngrade", "b", "downgrade a specific package", "downgrade a specific package")
+	rootCmd.Flags().
+		StringVarP(&clean, "clean", "c", "clean all the packages", "clean all the package repositories")
+	rootCmd.Flags().
+		StringVarP(&history, "history", "j", "history of the packages", "reports history of all the repositories")
+	rootCmd.Flags().
+		StringVarP(&rollback, "rollback", "r", "rolback a specific release", "rollback a specific release for the package")
+	rootCmd.Flags().
+		StringVarP(&info, "info", "i", "information about a specific package", "package information")
+	rootCmd.Flags().
+		StringVarP(&install, "install", "s", "install a specific package", "package install")
+	rootCmd.Flags().
+		StringVarP(&reinstall, "reinstall", "z", "reinstall a package", "re-install a specific package")
+	rootCmd.Flags().
+		StringVarP(&removep, "removep", "v", "remove a specific package", "remove a specific package")
+	rootCmd.Flags().
+		StringVarP(&search, "search", "t", "search a specific package", "search for a specific package repository")
+	rootCmd.Flags().
+		StringVarP(&searchall, "searchall", "a", "search all the package", "search all the package repository")
+	rootCmd.Flags().
+		StringVarP(&rpm, "rpm", "f", "install a specific rpm", "install a specific rpm package")
+	rootCmd.Flags().
+		StringVarP(&rpmpackage, "rpmpackage", "d", "install the rpm package", "install the specific rpm package")
+	rootCmd.Flags().
+		StringVarP(&packageid, "packageid", "n", "install the package id with the id number", "install the specific package with the id number")
+}
+
+func flagsFunc(cmd *cobra.Command, args []string) {
+	if list == "yes" {
 		out, err := exec.Command("dnf", "list", "--installed").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-
-	if len(*password) > 0 && *command == "refresh" {
-		cmd := exec.Command("dnf", "makecache", "--refresh")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with the %s\n", err)
-		}
-		out := exec.Command("dnf", "makecache", "--refresh")
+	if refresh == "yes" {
+		out, err := exec.Command("sudo", "dnf", "makecache", "--refresh").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-
-	if len(*password) > 0 && *command == "list-recent" {
-		cmd := exec.Command("dnf", "list", "--recent")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "list", "--recent").Output()
+	if listrecent == "yes" {
+		out, err := exec.Command("sudo", "dnf", "list", "--recent").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if len(*password) > 0 && *command == "upgrade" {
-		cmd := exec.Command("dnf", "list", "--upgrade")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "list", "--upgrade").Output()
+	if upgrade == "yes" {
+		out, err := exec.Command("sudo", "dnf", "list", "--upgrade").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-
-	if len(*password) > 0 && *command == "autoremove" {
-		cmd := exec.Command("dnf", "list", "--autoremove")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "list", "--autoremove").Output()
+	if removep == "yes" {
+		out, err := exec.Command("sudo", "dnf", "remove", "&rpmpackage").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if len(*password) > 0 && *command == "dnf-update" {
-		cmd := exec.Command("dnf", "check-update")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "check-update").Output()
+	if autoremove == "yes" {
+		out, err := exec.Command("sudo", "dnf", "list", "--autoremove").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if len(*password) > 0 && *command == "minimal" {
-		cmd := exec.Command("dnf", "upgrade-minimal")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "upgrade-minimal").Output()
+	if dnfupdate == "yes" {
+		out, err := exec.Command("sudo", "dnf", "check-update").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if len(*password) > 0 && *pack != "nil" && *command == "pkgupdate" {
-		cmd := exec.Command("dnf", "upgrade", "*pack")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "upgrade", "*pack").Output()
+	if minimal == "yes" {
+		out, err := exec.Command("sudo", "dnf", "upgrade-minimal").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if len(*password) > 0 && *pack != "nil" && *command == "pkgdowngrade" {
-		cmd := exec.Command("dnf", "downgrade", "*pack")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "downgrade", "*pack").Output()
+	if pkgupdate == "yes" {
+		out, err := exec.Command("sudo", "dnf", "upgrade", "&rpmpackage").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if len(*password) > 0 && *command == "clean" {
-		cmd1 := exec.Command("dnf", "cleanall")
-		cmd2 := exec.Command("dnf", "clean", "metadata")
-		err1 := cmd1.Run()
+	if pkgdowngrade == "yes" {
+		out, err := exec.Command("dnf", "downgrade", "&rpmpackage").Output()
+		if err != nil {
+			log.Fatal(err)
+			fmt.Println(out)
+		}
+	}
+	if clean == "yes" {
+		out, err := exec.Command("sudo", "dnf", "cleanall").Output()
+		if err != nil {
+			log.Fatal(err)
+			fmt.Println(out)
+		}
+		out1, err1 := exec.Command("sudo", "dnf", "clean", "metadata").Output()
 		if err1 != nil {
-			log.Fatal("cmd failed with %s\n", err1)
-		}
-		err2 := cmd2.Run()
-		if err2 != nil {
-			log.Fatal("cmd failed with %s\n", err2)
-		}
-		out, err := exec.Command("dnf", "cleanall").Output()
-		if err != nil {
-			log.Fatal(err)
-			fmt.Println(out)
-		}
-		out1, err1 := exec.Command("dnf", "clean", "metadata").Output()
-		if err1 != nil {
-			log.Fatal("cmd failed with %s\n", err1)
+			log.Fatal(err1)
 			fmt.Println(out1)
 		}
 	}
-	if *command == "history" {
-		cmd := exec.Command("dnf", "history")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "history").Output()
+	if history == "yes" {
+		out, err := exec.Command("sudo", "dnf", "history").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if len(*password) > 0 && *idnumber != "nil" && *pack != "nil" && *command == "rollback" {
-		cmd := exec.Command("dnf", "rollback", "*idnumber")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "rollback", "*idnumber").Output()
+	if rollback == "yes" {
+		out, err := exec.Command("sudo", "dnf", "rollback", "&packageid").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if *pack != "nil" && *command == "info" {
-		cmd := exec.Command("dnf", "info", "*pack")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "info", "*pack").Output()
+	if info == "yes" {
+		out, err := exec.Command("sudo", "dnf", "info", "&rpmpackage").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if len(*password) > 0 && *pack != "nil" && *command == "install" {
-		cmd := exec.Command("dnf", "install", "*pack")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "install", "*pack").Output()
+	if install == "yes" {
+		out, err := exec.Command("sudo", "dnf", "install", "&rpmpackage").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-	if len(*password) > 0 && *pack != "nil" && *command == "reinstall" {
-		cmd := exec.Command("dnf", "reinstall", "*pack")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("dnf", "install", "*pack").Output()
+	if reinstall == "yes" {
+		out, err := exec.Command("sudo", "dnf", "install", "&rpmpackage").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-
-	if len(*password) > 0 && *pack != "nil" && *command == "search" {
-		cmd := exec.Command("sudo", "dnf", "search", "*pack")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("sudo", "dnf", "search", "*pack").Output()
+	if search == "yes" {
+		out, err := exec.Command("sudo", "dnf", "search", "&rpmpackage").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-
-	if len(*password) > 0 && *pack != "nil" && *command == "searchall" {
-		cmd := exec.Command("sudo", "dnf", "search", "--all", "*pack")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("sudo", "dnf", "search", "--all", "*pack").Output()
+	if searchall == "yes" {
+		out, err := exec.Command("sudo", "dnf", "search", "--all", "&rpmpackage").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
 		}
 	}
-
-	if len(*password) > 0 && *pack != "nil" && *command == "remove" {
-		cmd := exec.Command("sudo", "dnf", "remove", "*pack")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("sudo", "dnf", "remove", "*pack").Output()
-		if err != nil {
-			log.Fatal(err)
-			fmt.Println(out)
-		}
-	}
-	if len(*password) > 0 && *rpm != "nil" {
-		cmd := exec.Command("sudo", "dnf", "install", "*rpm")
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal("cmd failed with %s\n", err)
-		}
-		out, err := exec.Command("sudo", "dnf", "install", "*rpm").Output()
+	if rpm == "yes" {
+		out, err := exec.Command("sudo", "dnf", "install", "&rpmpackage").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
