@@ -1,0 +1,47 @@
+dnf list --installed
+dnf list --recent 
+dnf list --upgrades
+dnf list --autoremove
+sudo dnf upgrade 
+sudo dnf check-update 
+sudo dnf upgrade-minimal 
+sudo dnf upgrade packagename 
+sudo dnf downgrade packagename 
+sudo dnf upgrade --refresh -advisory=
+sudo dnf clean packages 
+dnf history 
+dnf history rollback id-number 
+dnf history undo id-number 
+dnf info packagename 
+dnf install packagename 
+sudo dnf update 
+sudo dnf remove packagename 
+dnf search packagename 
+sudo dnf --enable repo=reponame 
+sudo dnf clean all 
+sudo dnf clean metadata 
+sudo dnf downgrade packagename 
+sudo dnf autoremove 
+sudo dnf check-update 
+sudo dnf install package.rpm 
+sudo dnf install packagename 
+dnf group list 
+sudo dnf group info groupname 
+sudo dnf group install package 
+sudo dnf search --all packagename 
+dnf repoquery packagename 
+dnf repoquery --installed --depends packagename 
+dnf provides libraryname
+sudo dnf config-manage --add-repo=reponame 
+sudo dnf repolist --enabled 
+sudo dnf config-manager --disable reponame 
+sudo dnf repolist 
+sudo dnf system-upgrade clean 
+sudo journalctl --vaccum-size=100M
+sudo dnf clean packages 
+rpm -q kernel or dnf list kernel 
+sudo vgs 
+lvresize -L +10G --resizefs /dev/mapper 
+sudo fdisk -l 
+lvresize -L -10G --resixefs /dev/mapper 
+sudo dnf makecache --refresh 
