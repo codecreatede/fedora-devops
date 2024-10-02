@@ -1,6 +1,8 @@
 # fedora-devops
 
 - a fedora system utility for monitoring the fedora installations in cloud antive applications. 
+- all the commands in the check just take the flag and the yes as a command. 
+- all the commands in the install take the flag and the yes and the rpm path. 
 - main menu for the fedoradevops
 ```
 gauravsablok@gaurav-sablok ~/Desktop/codecreatede/golang/fedora-devops ±main⚡ » \
@@ -21,7 +23,8 @@ Flags:
 
 Use "options [command] --help" for more information about a command.
 ```
-- system wide install 
+- system wide check
+- all the commands in the check just take the flag and the yes as a command. 
 ```
 gauravsablok@gaurav-sablok ~/Desktop/codecreatede/golang/fedora-devops ±main⚡ » \
 go run main.go run -h
@@ -44,7 +47,8 @@ Flags:
   -w, --refresh string         refreshing packages (default "refresh all the packages")
   -u, --upgrade string         list all the dnf upgrade (default "upgrade dnf")
 ```
-- system wide installation 
+- system wide install
+- all the commands in the install take the flag and the yes and the rpm path.  
 ```
 gauravsablok@gaurav-sablok ~/Desktop/codecreatede/golang/fedora-devops ±main⚡ » go run main.go install -h
 system wide installation needs to be done with this flag only. Use the -f flag to define the rpm package or the packageid
