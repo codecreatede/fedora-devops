@@ -111,7 +111,7 @@ func init() {
 
 func flagsFunc(cmd *cobra.Command, args []string) {
 	if list == "yes" {
-		out, err := exec.Command("dnf", "list", "--installed").Output()
+		out, err := exec.Command("uname", "-a").Output()
 		if err != nil {
 			log.Fatal(err)
 			fmt.Println(out)
@@ -124,6 +124,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if listrecent == "yes" {
 		out, err := exec.Command("sudo", "dnf", "list", "--recent").Output()
 		if err != nil {
@@ -131,6 +132,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if upgrade == "yes" {
 		out, err := exec.Command("sudo", "dnf", "list", "--upgrade").Output()
 		if err != nil {
@@ -138,6 +140,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if removep == "yes" {
 		out, err := exec.Command("sudo", "dnf", "remove", "&rpmpackage").Output()
 		if err != nil {
@@ -145,6 +148,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if autoremove == "yes" {
 		out, err := exec.Command("sudo", "dnf", "list", "--autoremove").Output()
 		if err != nil {
@@ -152,6 +156,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if dnfupdate == "yes" {
 		out, err := exec.Command("sudo", "dnf", "check-update").Output()
 		if err != nil {
@@ -159,6 +164,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if minimal == "yes" {
 		out, err := exec.Command("sudo", "dnf", "upgrade-minimal").Output()
 		if err != nil {
@@ -166,6 +172,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if pkgupdate == "yes" {
 		out, err := exec.Command("sudo", "dnf", "upgrade", "&rpmpackage").Output()
 		if err != nil {
@@ -173,6 +180,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if pkgdowngrade == "yes" {
 		out, err := exec.Command("dnf", "downgrade", "&rpmpackage").Output()
 		if err != nil {
@@ -180,6 +188,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if clean == "yes" {
 		out, err := exec.Command("sudo", "dnf", "cleanall").Output()
 		if err != nil {
@@ -192,6 +201,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out1))
 		}
 	}
+
 	if history == "yes" {
 		out, err := exec.Command("sudo", "dnf", "history").Output()
 		if err != nil {
@@ -199,6 +209,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if rollback == "yes" {
 		out, err := exec.Command("sudo", "dnf", "rollback", "&packageid").Output()
 		if err != nil {
@@ -206,6 +217,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if info == "yes" {
 		out, err := exec.Command("sudo", "dnf", "info", "&rpmpackage").Output()
 		if err != nil {
@@ -213,6 +225,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if install == "yes" {
 		out, err := exec.Command("sudo", "dnf", "install", "&rpmpackage").Output()
 		if err != nil {
@@ -220,6 +233,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if reinstall == "yes" {
 		out, err := exec.Command("sudo", "dnf", "install", "&rpmpackage").Output()
 		if err != nil {
@@ -227,6 +241,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if search == "yes" {
 		out, err := exec.Command("sudo", "dnf", "search", "&rpmpackage").Output()
 		if err != nil {
@@ -234,6 +249,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if searchall == "yes" {
 		out, err := exec.Command("sudo", "dnf", "search", "--all", "&rpmpackage").Output()
 		if err != nil {
@@ -241,6 +257,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if rpm == "yes" {
 		out, err := exec.Command("sudo", "dnf", "install", "&rpmpackage").Output()
 		if err != nil {
@@ -248,6 +265,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if lscpu == "yes" {
 		out, err := exec.Command("lscpu").Output()
 		if err != nil {
@@ -255,6 +273,7 @@ func flagsFunc(cmd *cobra.Command, args []string) {
 			fmt.Println(string(out))
 		}
 	}
+
 	if lscpuextended == "yes" {
 		out, err := exec.Command("lscpu", "--extended", "--json").Output()
 		if err != nil {
